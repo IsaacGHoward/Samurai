@@ -116,9 +116,9 @@ The hexagon is drawn in the colour specified in SamuraiBoardGame.COLOURELL.
 		int x = i * (s+t);
 		int y = j * h + (i%2) * h/2;
 		Polygon poly = hex(x,y);
-		g2.setColor(SamuraiBoardGame.COLOURCELL);
+		g2.setColor(SamuraiBoardGame.COLOURGRID);
 		//g2.fillPolygon(hexmech.hex(x,y));
-		g2.fillPolygon(poly);
+//		g2.fillPolygon(poly);
 		g2.setColor(SamuraiBoardGame.COLOURGRID);
 		g2.drawPolygon(poly);
 	}
@@ -136,27 +136,30 @@ The hexagon is drawn in the colour specified in SamuraiBoardGame.COLOURELL.
 	  The colour is set by SamuraiBoardGame.COLOURONE and SamuraiBoardGame.COLOURTWO.
 	  The value of n is converted to letter and drawn in the hexagon.
 *****************************************************************************/
-	public static void fillHex(int i, int j, int n, Graphics2D g2) {
-		char c='o';
+	public static void fillHex(int i, int j, Graphics2D g2, Color color, Hex.hexType type) {
+		
 		int x = i * (s+t);
 		int y = j * h + (i%2) * h/2;
-		if (n < 0) {
-			g2.setColor(SamuraiBoardGame.COLOURONE);
-			g2.fillPolygon(hex(x,y));
-			g2.setColor(SamuraiBoardGame.COLOURONETXT);
-			c = (char)(-n);
-			g2.drawString(""+c, x+r+BORDERS, y+r+BORDERS+4); //FIXME: handle XYVertex
-			//g2.drawString(x+","+y, x+r+BORDERS, y+r+BORDERS+4);
+		
+                if(color != Hex.none&&color != Hex.city)
+                {
+                    g2.setColor(color); 
+                    g2.fillPolygon(hex(x,y));
+                }
+                else if(type == Hex.hexType.city)
+                {
+                    g2.translate(x,y);
+                    g2.scale(x,y);
+                    
+                    g2.drawImage(SamuraiBoardGame.City, i, j, null);
+                    
+                    g2.scale(1.0/x,1.0/y);
+                    g2.translate(-x,-y);
+                }
+
 		}
-		if (n > 0) {
-			g2.setColor(SamuraiBoardGame.COLOURTWO);
-			g2.fillPolygon(hex(x,y));
-			g2.setColor(SamuraiBoardGame.COLOURTWOTXT);
-			c = (char)n;
-			g2.drawString(""+c, x+r+BORDERS, y+r+BORDERS+4); //FIXME handle XYVertex
-			//g2.drawString(i+","+j, x+r+BORDERS, y+r+BORDERS+4);
-		}
-	}
+
+	
 
 	//This function changes pixel location from a mouse click to a hex grid location
 /*****************************************************************************
