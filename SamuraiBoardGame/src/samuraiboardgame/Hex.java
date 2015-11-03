@@ -18,7 +18,7 @@ cityType3 type3;
 
 static final Color land = new Color(204, 153, 0);
 static final Color none = new Color(0, 0, 153);
-static final Color city = new Color( 255, 153, 0);
+static final Color city = new Color( 127, 127, 127);
      
 
 

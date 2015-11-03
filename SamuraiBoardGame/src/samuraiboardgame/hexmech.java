@@ -141,7 +141,7 @@ The hexagon is drawn in the colour specified in SamuraiBoardGame.COLOURELL.
 		int x = i * (s+t);
 		int y = j * h + (i%2) * h/2;
 		
-                if(color != Hex.none&&color != Hex.city)
+                if(color != Hex.none)
                 {
                     g2.setColor(color); 
                     g2.fillPolygon(hex(x,y));
@@ -149,13 +149,37 @@ The hexagon is drawn in the colour specified in SamuraiBoardGame.COLOURELL.
                 else if(type == Hex.hexType.city)
                 {
                     g2.translate(x,y);
-                    g2.scale(x,y);
+                    g2.scale(.2,.2);
                     
                     g2.drawImage(SamuraiBoardGame.City, i, j, null);
                     
                     g2.scale(1.0/x,1.0/y);
                     g2.translate(-x,-y);
                 }
+
+		}
+        public static void fillHexImage(int i, int j, Graphics2D g2,  Image I, Hex.hexType type) {
+		
+		int x = i * (s+t);
+		int y = j * h + (i%2) * h/2;
+                
+                double scaleVal = .2;
+                double sHoriz = 6;
+                double sVert = 7;
+                
+                if(type == Hex.hexType.city)
+                {
+                    g2.translate(x+sHoriz,y+sVert);
+                    g2.scale(scaleVal,scaleVal);
+                    
+                    g2.drawImage(I, i, j, null);
+                    
+                    g2.scale(1.0/scaleVal,1.0/scaleVal);
+                    g2.translate(-(x+sHoriz),-(y+sVert));
+                }
+		
+                
+               
 
 		}
 
