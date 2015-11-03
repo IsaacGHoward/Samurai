@@ -50,11 +50,12 @@ public class SamuraiBoardGame
 	final static Color COLOURTWO = new Color(0,0,0,200);
 	final static Color COLOURTWOTXT = new Color(255,100,255);
 	
-	final static int BWIDTH = 25; //board size.
-        final static int BHEIGHT = 24;
-	final static int HEXSIZE = 40;	//hex size in pixels
-	final static int BORDERS = 10;  
+	final static int BWIDTH = 25;//30; //board size.
+        final static int BHEIGHT = 24;//25;
+	final static int HEXSIZE = 40;//25;	//hex size in pixels
+	final static int BORDERS = 10;//-10;  
 	final static int SCRSIZE = HEXSIZE * (BHEIGHT + 1) + BORDERS*3; //screen size (vertical dimension).
+        int numPlayers = 2;
 
 	Hex[][] board = new Hex[BWIDTH][BHEIGHT];
         
@@ -63,7 +64,7 @@ public class SamuraiBoardGame
             if (first)
             {
                 Background = Toolkit.getDefaultToolkit().getImage("./water_texture.jpg");
-                City = Toolkit.getDefaultToolkit().getImage("./city_temp.GIF");
+                City = Toolkit.getDefaultToolkit().getImage("./cityhex.GIF");
             }
             for (int i=0;i<BWIDTH;i++){
                    for (int j=0;j<BHEIGHT;j++) 
@@ -75,6 +76,9 @@ public class SamuraiBoardGame
         void Island()
         {
             int x = 0;
+            
+                if(numPlayers >= 2)
+                {
                 board[7][17].setType(Hex.hexType.land);
                 board[7][18].setType(Hex.hexType.city);
                 board[8][18].setType(Hex.hexType.land);
@@ -122,8 +126,10 @@ public class SamuraiBoardGame
                 board[18][11] .setType(Hex.hexType.city);
                 board[18][10].setType(Hex.hexType.land);
                 board[18][9] .setType(Hex.hexType.city);
-                
+                }
                 //Top Island
+                if(numPlayers == 4)
+                {
                 board[15][6] .setType(Hex.hexType.city);
                 board[15][5].setType(Hex.hexType.land);
                 board[15][4] .setType(Hex.hexType.city);
@@ -145,8 +151,10 @@ public class SamuraiBoardGame
                 board[19][3].setType(Hex.hexType.land);
                 board[20][4].setType(Hex.hexType.land);
                 board[20][3] .setType(Hex.hexType.city);
-                
+                }
                 //Bottom Islands
+                if(numPlayers == 3 ||numPlayers == 4)
+                {
                 board[3][20] .setType(Hex.hexType.city);
                 board[4][22] .setType(Hex.hexType.city);
                 board[4][21].setType(Hex.hexType.land);
@@ -169,6 +177,7 @@ public class SamuraiBoardGame
                 board[10][21].setType(Hex.hexType.land);
                 board[11][20] .setType(Hex.hexType.city);
                 board[11][19].setType(Hex.hexType.land);
+                }
         }
 
 	void initGame(){
@@ -210,7 +219,7 @@ public class SamuraiBoardGame
 
 		public DrawingPanel()
 		{	
-			//setBackground(Color.black);
+			setBackground(Hex.none);
 
                         
 //                        
@@ -229,8 +238,8 @@ public class SamuraiBoardGame
 			super.paintComponent(g2);
                         
                         
-                         g.drawImage(Background,1,1,
-                         getWidth(),getHeight(),this);
+                         //g.drawImage(Background,1,1,
+                         //getWidth(),getHeight(),this);
                  // BAANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANAN
                         
 			//draw grid
@@ -244,7 +253,10 @@ public class SamuraiBoardGame
 				for (int j=0;j<BHEIGHT;j++) {					
 					//if (board[i][j] < 0) hexmech.fillHex(i,j,COLOURONE,-board[i][j],g2);
 					//if (board[i][j] > 0) hexmech.fillHex(i,j,COLOURTWO, board[i][j],g2);
+                                    if(board[i][j].getType() != Hex.hexType.city)
 					hexmech.fillHex(i,j,g2,board[i][j].getColor(),board[i][j].getType() );
+                                    else
+                                        hexmech.fillHexImage(i, j, g2, City, Hex.hexType.city);
 				}
 			}
 
@@ -275,7 +287,7 @@ public class SamuraiBoardGame
                                    System.out.println(x+ " FART");
                                    
                                    
-                                board[p.x][p.y]=new Hex(Hex.hexType.land);
+                                board[p.x][p.y]=new Hex(Hex.hexType.city);
 				repaint();
 			}
                     
